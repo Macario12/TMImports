@@ -1,9 +1,9 @@
 import React from 'react';
-import { Car, TrendingUp, Shield, Globe, Users, Award, ArrowRight, CheckCircle, Search } from 'lucide-react';
+import { Car, TrendingUp, Shield, Globe, Users, Award, ArrowRight, CheckCircle, Search, Star, ChevronRight } from 'lucide-react';
 
 interface HomepageProps {
-  onSearch: (searchTerm: string) => void;
-  onNavigate: (tab: string) => void;
+  onSearch?: (searchTerm: string) => void;
+  onNavigate?: (tab: string) => void;
 }
 
 const Homepage: React.FC<HomepageProps> = ({ onSearch, onNavigate }) => {
@@ -11,7 +11,7 @@ const Homepage: React.FC<HomepageProps> = ({ onSearch, onNavigate }) => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
+    if (searchTerm.trim() && onSearch && onNavigate) {
       onSearch(searchTerm);
       onNavigate('catalog');
     }
@@ -20,23 +20,44 @@ const Homepage: React.FC<HomepageProps> = ({ onSearch, onNavigate }) => {
   const features = [
     {
       icon: Car,
-      title: 'Catálogo Exclusivo',
-      description: 'Acceso a miles de vehículos premium de Copart e IAAI con información detallada y actualizada en tiempo real.'
+      title: 'Catálogo Premium',
+      description: 'Acceso exclusivo a vehículos de alta gama desde las principales casas de subasta de EE.UU.'
     },
     {
       icon: TrendingUp,
-      title: 'Análisis Financiero',
-      description: 'Calculadora avanzada de costos que incluye todos los gastos: subasta, transporte, importación y aranceles.'
+      title: 'Análisis Inteligente',
+      description: 'Herramientas avanzadas de análisis financiero para maximizar tu retorno de inversión.'
     },
     {
       icon: Shield,
       title: 'Proceso Seguro',
-      description: 'Transacciones protegidas con seguimiento completo desde la compra hasta la entrega final.'
+      description: 'Transacciones protegidas con seguimiento completo y garantía de satisfacción.'
     },
     {
       icon: Globe,
-      title: 'Importación Global',
-      description: 'Especialistas en importación internacional con experiencia en regulaciones aduaneras.'
+      title: 'Alcance Global',
+      description: 'Red internacional de logística para importación eficiente a cualquier destino.'
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: 'Carlos Mendoza',
+      role: 'Empresario',
+      content: 'Excelente servicio. Importé un BMW 2022 y el proceso fue transparente desde el inicio.',
+      rating: 5
+    },
+    {
+      name: 'Ana García',
+      role: 'Coleccionista',
+      content: 'La calculadora de costos me ayudó a tomar decisiones informadas. Muy recomendado.',
+      rating: 5
+    },
+    {
+      name: 'Roberto Silva',
+      role: 'Inversor',
+      content: 'Profesionalismo excepcional. Ya he importado 3 vehículos con resultados excelentes.',
+      rating: 5
     }
   ];
 
@@ -47,212 +68,298 @@ const Homepage: React.FC<HomepageProps> = ({ onSearch, onNavigate }) => {
     { number: '50+', label: 'Países Atendidos' }
   ];
 
-  const services = [
-    'Búsqueda y selección de vehículos',
-    'Participación en subastas',
-    'Transporte terrestre y marítimo',
-    'Gestión de documentación',
-    'Trámites aduaneros',
-    'Entrega puerta a puerta'
-  ];
-
   return (
-    <div className="min-h-screen">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-secondary-800 dark:to-secondary-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight text-secondary-900 dark:text-white">
-                Tu Socio en 
-                <span className="block text-primary-600 dark:text-primary-400">TM Imports</span>
-              </h1>
-              <p className="text-xl text-secondary-600 dark:text-secondary-300 mb-8 leading-relaxed">
-                Especialistas en la importación de vehículos premium desde las principales casas de subasta de Estados Unidos. 
-                Transparencia total en costos y proceso garantizado.
-              </p>
-              
-              {/* Search Bar */}
-              <form onSubmit={handleSearch} className="mb-8">
-                <div className="relative max-w-md">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-secondary-500" />
+      <section className="relative overflow-hidden bg-white dark:bg-neutral-950">
+        <div className="container mx-auto px-4 py-24 sm:py-32">
+          <div className="mx-auto max-w-2xl text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-6xl">
+              Importa Vehículos Premium con{' '}
+              <span className="text-primary-600 dark:text-primary-400">Confianza Total</span>
+            </h1>
+            <p className="mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+              Especialistas en la importación de vehículos de alta gama desde las principales casas de subasta de Estados Unidos. 
+              Proceso transparente, costos claros, resultados garantizados.
+            </p>
+            
+            {/* Search Bar */}
+            <div className="mt-10 flex items-center justify-center">
+              <form onSubmit={handleSearch} className="w-full max-w-md">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
                   <input
                     type="text"
                     placeholder="Buscar por lote, VIN o palabra clave..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-4 border border-secondary-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-secondary-800 dark:border-secondary-600 dark:text-white shadow-lg"
+                    className="flex h-12 w-full rounded-md border border-neutral-200 bg-white pl-10 pr-24 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:placeholder:text-neutral-400 dark:focus-visible:ring-primary-400"
                   />
                   <button
                     type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-2 dark:bg-primary-600 dark:hover:bg-primary-700"
                   >
                     Buscar
                   </button>
                 </div>
               </form>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => onNavigate('catalog')}
-                  className="bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 flex items-center justify-center space-x-2">
-                  <span>Explorar Catálogo</span>
-                  <ArrowRight className="h-5 w-5" />
-                </button>
-                <button 
-                  onClick={() => onNavigate('calculator')}
-                  className="border-2 border-primary-600 text-primary-600 px-8 py-4 rounded-lg font-semibold hover:bg-primary-50 transition-all duration-200">
-                  Calcular Costos
-                </button>
-              </div>
             </div>
-            <div className="relative">
-              <div className="bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-xl">
-                <img 
-                  src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg" 
-                  alt="Vehículo premium de subasta"
-                  className="w-full h-80 object-cover rounded-xl shadow-lg"
-                />
-                <div className="absolute -bottom-4 -right-4 bg-primary-600 text-white p-4 rounded-xl shadow-lg">
-                  <div className="text-2xl font-bold">$25,000</div>
-                  <div className="text-sm text-primary-100">Ahorro promedio</div>
-                </div>
-              </div>
+
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <button
+                onClick={() => onNavigate?.('catalog')}
+                className="rounded-md bg-primary-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700"
+              >
+                Explorar Catálogo
+              </button>
+              <button
+                onClick={() => onNavigate?.('calculator')}
+                className="text-sm font-semibold leading-6 text-neutral-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 flex items-center"
+              >
+                Calcular Costos <ChevronRight className="ml-1 h-4 w-4" />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white dark:bg-secondary-900 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-secondary-600 dark:text-secondary-300 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="bg-secondary-50 dark:bg-secondary-800 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="bg-primary-600 p-2 rounded-lg">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-primary-600 font-semibold text-lg">Quiénes Somos</span>
-              </div>
-              <h2 className="text-4xl font-bold text-secondary-900 dark:text-white mb-6">
-                Expertos en Importación de Vehículos Premium
+      <section className="bg-neutral-50 py-24 sm:py-32 dark:bg-neutral-900">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+                Resultados que Hablan por Sí Solos
               </h2>
-              <p className="text-lg text-secondary-700 dark:text-secondary-300 mb-6 leading-relaxed">
-                Somos una empresa especializada en la importación de vehículos de alta gama desde las principales 
-                casas de subasta de Estados Unidos. Con más de 15 años de experiencia, hemos desarrollado un 
-                proceso transparente y eficiente que garantiza las mejores oportunidades de inversión.
+              <p className="mt-4 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+                Más de una década construyendo confianza y entregando resultados excepcionales.
               </p>
-              <p className="text-lg text-secondary-700 dark:text-secondary-300 mb-8 leading-relaxed">
-                Nuestro equipo de expertos maneja cada aspecto del proceso: desde la selección del vehículo 
-                ideal hasta su entrega en tu puerta, incluyendo todos los trámites legales y aduaneros necesarios.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                {services.map((service, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                    <span className="text-secondary-700 dark:text-secondary-300">{service}</span>
-                  </div>
-                ))}
-              </div>
             </div>
-            <div className="relative">
-              <div className="bg-white dark:bg-secondary-700 rounded-2xl p-8 shadow-md">
-                <img 
-                  src="https://images.pexels.com/photos/1007410/pexels-photo-1007410.jpeg" 
-                  alt="Equipo profesional"
-                  className="w-full h-80 object-cover rounded-xl mb-6"
-                />
-                <div className="text-center">
-                  <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-2">
-                    Proceso Transparente
-                  </h3>
-                  <p className="text-secondary-600 dark:text-secondary-300">
-                    Cada paso documentado con informes detallados de costos y seguimiento en tiempo real.
-                  </p>
+            <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((stat, index) => (
+                <div key={index} className="flex flex-col bg-white p-8 dark:bg-neutral-800">
+                  <dt className="text-sm font-semibold leading-6 text-neutral-600 dark:text-neutral-400">
+                    {stat.label}
+                  </dt>
+                  <dd className="order-first text-3xl font-bold tracking-tight text-neutral-900 dark:text-white">
+                    {stat.number}
+                  </dd>
                 </div>
-              </div>
-              <div className="absolute -top-6 -left-6 bg-primary-600 text-white p-4 rounded-xl shadow-lg">
-                <Award className="h-8 w-8" />
-              </div>
-            </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="bg-white dark:bg-secondary-900 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-secondary-900 dark:text-white mb-4">
-              ¿Por Qué Elegir AutoSubasta?
+      <section className="py-24 sm:py-32">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base font-semibold leading-7 text-primary-600 dark:text-primary-400">
+              Servicios Completos
             </h2>
-            <p className="text-xl text-secondary-600 dark:text-secondary-300 max-w-3xl mx-auto">
-              Ofrecemos una experiencia completa y transparente en la importación de vehículos, 
-              con herramientas avanzadas y soporte especializado.
+            <p className="mt-2 text-3xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+              Todo lo que Necesitas en un Solo Lugar
+            </p>
+            <p className="mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+              Desde la búsqueda hasta la entrega, manejamos cada aspecto del proceso de importación 
+              con la máxima profesionalidad y transparencia.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div key={index} className="text-center group">
-                  <div className="bg-primary-50 dark:bg-primary-900/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/40 transition-colors duration-200">
-                    <Icon className="h-10 w-10 text-primary-600" />
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+              {features.map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={index} className="flex flex-col">
+                    <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-neutral-900 dark:text-white">
+                      <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-primary-600">
+                        <Icon className="h-6 w-6 text-white" />
+                      </div>
+                      {feature.title}
+                    </dt>
+                    <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-neutral-600 dark:text-neutral-400">
+                      <p className="flex-auto">{feature.description}</p>
+                    </dd>
                   </div>
-                  <h3 className="text-xl font-bold text-secondary-900 dark:text-white mb-4">
-                    {feature.title}
-                  </h3>
-                  <p className="text-secondary-600 dark:text-secondary-300 leading-relaxed">
-                    {feature.description}
-                  </p>
+                );
+              })}
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-neutral-50 py-24 sm:py-32 dark:bg-neutral-900">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+              Lo que Dicen Nuestros Clientes
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+              Miles de clientes satisfechos confían en nosotros para sus importaciones de vehículos.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((testimonial, index) => (
+                <div key={index} className="rounded-2xl bg-white p-8 shadow-lg ring-1 ring-neutral-900/5 dark:bg-neutral-800 dark:ring-white/10">
+                  <div className="flex items-center gap-x-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-primary-400 text-primary-400" />
+                    ))}
+                  </div>
+                  <blockquote className="text-neutral-900 dark:text-white">
+                    <p>"{testimonial.content}"</p>
+                  </blockquote>
+                  <figcaption className="mt-6 flex items-center gap-x-4">
+                    <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center">
+                      <span className="text-sm font-medium text-white">
+                        {testimonial.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-neutral-900 dark:text-white">
+                        {testimonial.name}
+                      </div>
+                      <div className="text-neutral-600 dark:text-neutral-400">
+                        {testimonial.role}
+                      </div>
+                    </div>
+                  </figcaption>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-24 sm:py-32">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-2xl lg:text-center">
+            <h2 className="text-base font-semibold leading-7 text-primary-600 dark:text-primary-400">
+              Proceso Simple
+            </h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+              Cómo Funciona Nuestro Servicio
+            </p>
+            <p className="mt-6 text-lg leading-8 text-neutral-600 dark:text-neutral-400">
+              Un proceso optimizado que te lleva desde la selección hasta la entrega de tu vehículo ideal.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-7xl">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-16 lg:grid-cols-3">
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
+                  <Search className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  1. Busca y Selecciona
+                </h3>
+                <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                  Explora nuestro catálogo de vehículos premium y utiliza nuestras herramientas de análisis.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
+                  <Calculator className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  2. Calcula Costos
+                </h3>
+                <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                  Usa nuestra calculadora para obtener un desglose completo de todos los costos involucrados.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary-600">
+                  <Car className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                  3. Recibe tu Vehículo
+                </h3>
+                <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+                  Nosotros manejamos todo el proceso de importación y entrega hasta tu puerta.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-white dark:bg-secondary-900 border-t border-secondary-200 dark:border-secondary-700 py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-secondary-900 dark:text-white mb-6">
-            ¿Listo para Encontrar tu Próximo Vehículo?
-          </h2>
-          <p className="text-xl text-secondary-600 dark:text-secondary-300 mb-8 leading-relaxed">
-            Únete a miles de clientes satisfechos que han encontrado vehículos excepcionales 
-            a precios incomparables a través de nuestro servicio.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={() => onNavigate('catalog')}
-              className="bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-700 transition-all duration-200 flex items-center justify-center space-x-2">
-              <span>Comenzar Ahora</span>
-              <ArrowRight className="h-5 w-5" />
-            </button>
-            <button className="border-2 border-primary-600 text-primary-600 dark:text-primary-400 px-8 py-4 rounded-lg font-semibold hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all duration-200">
-              Contactar Experto
-            </button>
+      <section className="bg-primary-600 dark:bg-primary-700">
+        <div className="container mx-auto px-4 py-24 sm:py-32">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              ¿Listo para Comenzar?
+            </h2>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-100">
+              Únete a miles de clientes satisfechos que han encontrado vehículos excepcionales 
+              a precios incomparables.
+            </p>
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <button
+                onClick={() => onNavigate?.('catalog')}
+                className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-primary-600 shadow-sm hover:bg-neutral-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              >
+                Explorar Catálogo
+              </button>
+              <button
+                onClick={() => onNavigate?.('calculator')}
+                className="text-sm font-semibold leading-6 text-white hover:text-primary-100 flex items-center"
+              >
+                Calcular Costos <ChevronRight className="ml-1 h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-800">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600">
+                  <Car className="h-5 w-5 text-white" />
+                </div>
+                <span className="font-bold text-xl text-neutral-900 dark:text-white">
+                  TMImports
+                </span>
+              </div>
+              <p className="text-neutral-600 dark:text-neutral-400 max-w-md">
+                Especialistas en importación de vehículos premium con más de 15 años de experiencia 
+                en el mercado internacional.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Servicios</h3>
+              <ul className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+                <li>Catálogo de Vehículos</li>
+                <li>Calculadora de Costos</li>
+                <li>Informes Detallados</li>
+                <li>Asesoría Especializada</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-neutral-900 dark:text-white mb-4">Contacto</h3>
+              <ul className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+                <li>info@tmimports.com</li>
+                <li>+1 (555) 123-4567</li>
+                <li>Miami, FL</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 border-t border-neutral-200 pt-8 dark:border-neutral-800">
+            <p className="text-center text-sm text-neutral-600 dark:text-neutral-400">
+              © 2024 TMImports. Todos los derechos reservados.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -25,19 +25,19 @@ function App() {
       case 'reports':
         return <Reports />;
       default:
-        return <Homepage />;
+        return <Homepage onSearch={handleSearch} onNavigate={setActiveTab} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-secondary-50">
+    <div className="min-h-screen bg-white dark:bg-neutral-950">
       <Header 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
-      <main className="pb-8">
+      <main>
         {renderActiveComponent()}
       </main>
     </div>

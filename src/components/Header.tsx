@@ -23,8 +23,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
   ];
 
   useEffect(() => {
-    // Check for saved theme preference
-    const savedTheme = localStorage.getItem('hs_theme');
+    const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       setDarkMode(true);
       document.documentElement.classList.add('dark');
@@ -33,12 +32,11 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    localStorage.setItem('hs_theme', !darkMode ? 'dark' : 'default');
+    localStorage.setItem('theme', !darkMode ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark');
   };
 
   const handleAuth = (email: string, password: string, name?: string) => {
-    // Simulate authentication
     setIsLoggedIn(true);
     setUser({ 
       name: name || email.split('@')[0], 
@@ -54,78 +52,33 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
 
   return (
     <>
-      <header className="sticky inset-x-0 top-4 z-50 w-full">
-        <nav 
-          className="relative mx-2 w-full rounded-[36px] border border-yellow-100/40 bg-yellow-50/60 px-4 py-3 backdrop-blur-md transition-all duration-300 dark:border-neutral-700/40 dark:bg-neutral-800/80 md:flex md:items-center md:justify-between md:px-6 lg:px-8 xl:mx-auto"
-          aria-label="Global"
-        >
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <a
-              href="#"
-              className="flex items-center space-x-3 rounded-lg text-xl font-bold outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-              aria-label="Brand"
-            >
-              <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-2 rounded-xl shadow-md">
-                <Car className="h-6 w-6 text-white" />
+      <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-neutral-800 dark:bg-neutral-950/95 dark:supports-[backdrop-filter]:bg-neutral-950/60">
+        <div className="container mx-auto flex h-16 max-w-screen-2xl items-center px-4">
+          {/* Logo */}
+          <div className="mr-4 flex">
+            <a href="#" className="mr-6 flex items-center space-x-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600">
+                <Car className="h-5 w-5 text-white" />
               </div>
-              <span className="bg-gradient-to-r from-primary-600 to-secondary-900 bg-clip-text text-transparent dark:from-primary-400 dark:to-secondary-200">
+              <span className="hidden font-bold text-xl text-neutral-900 dark:text-white sm:inline-block">
                 TMImports
               </span>
             </a>
-
-            {/* Mobile buttons */}
-            <div className="flex items-center gap-x-2 md:hidden">
-              {!isLoggedIn && (
-                <button
-                  onClick={() => {
-                    setAuthMode('login');
-                    setShowAuthModal(true);
-                  }}
-                  className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
-                  aria-label="Login"
-                >
-                  <LogIn className="h-4 w-4" />
-                </button>
-              )}
-              <button
-                onClick={toggleDarkMode}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
-                aria-label="Toggle dark mode"
-              >
-                {darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-              </button>
-              <button
-                type="button"
-                className="hs-collapse-toggle flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label="Toggle navigation"
-              >
-                {mobileMenuOpen ? (
-                  <X className="h-[1.25rem] w-[1.25rem]" />
-                ) : (
-                  <Menu className="h-[1.25rem] w-[1.25rem]" />
-                )}
-              </button>
-            </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className={`hs-collapse ${mobileMenuOpen ? 'block' : 'hidden'} grow basis-full overflow-hidden transition-all duration-300 md:block`}>
-            <div className="mt-5 flex flex-col gap-y-4 md:mt-0 md:flex-row md:items-center md:justify-end md:gap-x-4 lg:gap-x-7 md:gap-y-0">
+          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+            <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <button
                     key={item.id}
-                    onClick={() => {
-                      setActiveTab(item.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className={`flex items-center gap-x-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
+                    onClick={() => setActiveTab(item.id)}
+                    className={`flex items-center space-x-1 transition-colors hover:text-neutral-900 dark:hover:text-neutral-50 ${
                       activeTab === item.id
-                        ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400'
-                        : 'text-neutral-600 hover:bg-neutral-200/50 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-700/50 dark:hover:text-neutral-200'
+                        ? 'text-neutral-900 dark:text-white'
+                        : 'text-neutral-600 dark:text-neutral-400'
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -133,64 +86,151 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
                   </button>
                 );
               })}
+            </nav>
 
-              {/* Auth buttons for desktop */}
+            <div className="flex items-center space-x-2">
+              {/* Auth Buttons */}
               {isLoggedIn ? (
-                <div className="flex items-center gap-x-4">
-                  <div className="hidden md:flex items-center gap-x-2">
-                    <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-medium">
+                <div className="hidden md:flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
+                      <span className="text-sm font-medium text-white">
                         {user?.name.charAt(0).toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <span className="text-sm text-neutral-700 dark:text-neutral-300">
                       {user?.name}
                     </span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+                    className="text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
                   >
-                    Cerrar Sesión
+                    Salir
                   </button>
                 </div>
               ) : (
-                <div className="hidden md:flex items-center gap-x-4">
+                <div className="hidden md:flex items-center space-x-2">
                   <button
                     onClick={() => {
                       setAuthMode('login');
                       setShowAuthModal(true);
                     }}
-                    className="flex items-center gap-x-2 text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors"
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 h-9 px-4 py-2"
                   >
-                    <LogIn className="h-4 w-4" />
-                    <span>Iniciar Sesión</span>
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Iniciar Sesión
                   </button>
                   <button
                     onClick={() => {
                       setAuthMode('signup');
                       setShowAuthModal(true);
                     }}
-                    className="bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-600 transition-colors flex items-center gap-x-2"
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-primary-600 text-white shadow hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 h-9 px-4 py-2"
                   >
-                    <UserPlus className="h-4 w-4" />
-                    <span>Registrarse</span>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Registrarse
                   </button>
                 </div>
               )}
 
-              {/* Dark mode toggle for desktop */}
+              {/* Dark Mode Toggle */}
               <button
                 onClick={toggleDarkMode}
-                className="hidden h-8 w-8 items-center justify-center rounded-full text-sm font-medium text-neutral-600 transition duration-300 hover:bg-neutral-200 dark:text-neutral-400 dark:hover:bg-neutral-700 md:flex"
-                aria-label="Toggle dark mode"
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 h-9 w-9"
               >
                 {darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
               </button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 hover:bg-neutral-100 hover:text-neutral-900 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 h-9 w-9 md:hidden"
+              >
+                {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+              </button>
             </div>
           </div>
-        </nav>
-        <br/>
+        </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 md:hidden">
+            <div className="container mx-auto px-4 py-4">
+              <nav className="flex flex-col space-y-3">
+                {navItems.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        setActiveTab(item.id);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                        activeTab === item.id
+                          ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white'
+                          : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50'
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+                
+                {/* Mobile Auth */}
+                <div className="border-t border-neutral-200 pt-3 dark:border-neutral-800">
+                  {isLoggedIn ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2 px-3 py-2">
+                        <div className="h-6 w-6 rounded-full bg-primary-600 flex items-center justify-center">
+                          <span className="text-xs font-medium text-white">
+                            {user?.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <span className="text-sm text-neutral-700 dark:text-neutral-300">
+                          {user?.name}
+                        </span>
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-3 py-2 text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50 rounded-md"
+                      >
+                        Cerrar Sesión
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => {
+                          setAuthMode('login');
+                          setShowAuthModal(true);
+                          setMobileMenuOpen(false);
+                        }}
+                        className="flex w-full items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50"
+                      >
+                        <LogIn className="h-4 w-4" />
+                        <span>Iniciar Sesión</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setAuthMode('signup');
+                          setShowAuthModal(true);
+                          setMobileMenuOpen(false);
+                        }}
+                        className="flex w-full items-center space-x-2 rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                      >
+                        <UserPlus className="h-4 w-4" />
+                        <span>Registrarse</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </nav>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Auth Modal */}
@@ -225,77 +265,85 @@ const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose, onAuth, onSwitchMo
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white dark:bg-secondary-800 rounded-2xl max-w-md w-full p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-secondary-900 dark:text-white">
-            {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-secondary-100 dark:hover:bg-secondary-700 rounded-lg transition-colors"
-          >
-            <X className="h-5 w-5 text-secondary-600 dark:text-secondary-400" />
-          </button>
+    <div className="fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
+      <div className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-neutral-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg dark:border-neutral-800 dark:bg-neutral-950">
+        <div className="flex flex-col space-y-1.5 text-center sm:text-left">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
+              {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+            </h2>
+            <button
+              onClick={onClose}
+              className="rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-neutral-100 data-[state=open]:text-neutral-500 dark:ring-offset-neutral-950 dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800 dark:data-[state=open]:text-neutral-400"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            {mode === 'login' 
+              ? 'Ingresa tus credenciales para acceder a tu cuenta'
+              : 'Crea una nueva cuenta para comenzar'
+            }
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="grid gap-4">
           {mode === 'signup' && (
-            <div>
-              <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+            <div className="grid gap-2">
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-neutral-900 dark:text-white">
                 Nombre Completo
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-secondary-700 dark:text-white"
+                className="flex h-9 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
                 required
               />
             </div>
           )}
-          <div>
-            <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+          <div className="grid gap-2">
+            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-neutral-900 dark:text-white">
               Correo Electrónico
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-secondary-700 dark:text-white"
+              className="flex h-9 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-secondary-700 dark:text-secondary-300 mb-2">
+          <div className="grid gap-2">
+            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-neutral-900 dark:text-white">
               Contraseña
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-secondary-300 dark:border-secondary-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-secondary-700 dark:text-white"
+              className="flex h-9 w-full rounded-md border border-neutral-200 bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-primary-600 text-white shadow hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 h-9 px-4 py-2"
           >
             {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-secondary-600 dark:text-secondary-400">
+        <div className="text-center text-sm">
+          <span className="text-neutral-500 dark:text-neutral-400">
             {mode === 'login' ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-            <button
-              onClick={() => onSwitchMode(mode === 'login' ? 'signup' : 'login')}
-              className="ml-2 text-primary-600 hover:text-primary-700 font-medium"
-            >
-              {mode === 'login' ? 'Regístrate' : 'Inicia Sesión'}
-            </button>
-          </p>
+          </span>
+          <button
+            onClick={() => onSwitchMode(mode === 'login' ? 'signup' : 'login')}
+            className="ml-1 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+          >
+            {mode === 'login' ? 'Regístrate aquí' : 'Inicia sesión aquí'}
+          </button>
         </div>
       </div>
     </div>

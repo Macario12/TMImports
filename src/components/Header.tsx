@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Car, BarChart3, Calculator, Menu, X, Sun, Moon } from 'lucide-react';
+import { Car, BarChart3, Calculator, Menu, X, Sun, Moon, LogIn, UserPlus } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: (open: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen, setMobileMenuOpen }) => {
   const [darkMode, setDarkMode] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   const navItems = [
     { id: 'home', label: 'Inicio', icon: Car },

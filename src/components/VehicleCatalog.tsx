@@ -5,8 +5,12 @@ import { Vehicle } from '../types';
 import VehicleCard from './VehicleCard';
 import VehicleModal from './VehicleModal';
 
-const VehicleCatalog: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+interface VehicleCatalogProps {
+  searchTerm?: string;
+}
+
+const VehicleCatalog: React.FC<VehicleCatalogProps> = ({ searchTerm: initialSearchTerm = '' }) => {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
   const [filters, setFilters] = useState({
     auctionHouse: '',
@@ -18,6 +22,10 @@ const VehicleCatalog: React.FC = () => {
   });
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
+  // Update search term when prop changes
+  React.useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
   const filteredVehicles = useMemo(() => {
     return mockVehicles.filter(vehicle => {
       const matchesSearch = searchTerm === '' || 

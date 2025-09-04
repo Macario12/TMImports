@@ -8,13 +8,18 @@ import Reports from './components/Reports';
 function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+  };
 
   const renderActiveComponent = () => {
     switch (activeTab) {
       case 'home':
-        return <Homepage />;
+        return <Homepage onSearch={handleSearch} onNavigate={setActiveTab} />;
       case 'catalog':
-        return <VehicleCatalog />;
+        return <VehicleCatalog searchTerm={searchTerm} />;
       case 'calculator':
         return <CostCalculator />;
       case 'reports':

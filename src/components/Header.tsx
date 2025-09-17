@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
           {/* Logo */}
           <div className="mr-4 flex">
             <a href="#" className="mr-6 flex items-center space-x-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-yellow-600">
                 <Car className="h-5 w-5 text-white" />
               </div>
               <span className="hidden font-bold text-xl text-neutral-900 dark:text-white sm:inline-block">
@@ -93,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
               {isLoggedIn ? (
                 <div className="hidden md:flex items-center space-x-3">
                   <div className="flex items-center space-x-2">
-                    <div className="h-8 w-8 rounded-full bg-primary-600 flex items-center justify-center">
+                    <div className="h-8 w-8 rounded-full bg-yellow-600 flex items-center justify-center">
                       <span className="text-sm font-medium text-white">
                         {user?.name.charAt(0).toUpperCase()}
                       </span>
@@ -126,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
                       setAuthMode('signup');
                       setShowAuthModal(true);
                     }}
-                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-primary-600 text-white shadow hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 h-9 px-4 py-2"
+                    className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-yellow-600 text-white shadow hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700 h-9 px-4 py-2"
                   >
                     <UserPlus className="mr-2 h-4 w-4" />
                     Registrarse
@@ -188,7 +188,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
                           <span className="text-xs font-medium text-white">
                             {user?.name.charAt(0).toUpperCase()}
                           </span>
-                        </div>
+                      <div className="h-6 w-6 rounded-full bg-yellow-600 flex items-center justify-center">
                         <span className="text-sm text-neutral-700 dark:text-neutral-300">
                           {user?.name}
                         </span>
@@ -219,7 +219,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, setActiveTab, mobileMenuOpen
                           setShowAuthModal(true);
                           setMobileMenuOpen(false);
                         }}
-                        className="flex w-full items-center space-x-2 rounded-md bg-primary-600 px-3 py-2 text-sm font-medium text-white hover:bg-primary-700"
+                        className="flex w-full items-center space-x-2 rounded-md bg-yellow-600 px-3 py-2 text-sm font-medium text-white hover:bg-yellow-700"
                       >
                         <UserPlus className="h-4 w-4" />
                         <span>Registrarse</span>
@@ -328,7 +328,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose, onAuth, onSwitchMo
           </div>
           <button
             type="submit"
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-primary-600 text-white shadow hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700 h-9 px-4 py-2"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-neutral-300 bg-yellow-600 text-white shadow hover:bg-yellow-700 dark:bg-yellow-600 dark:hover:bg-yellow-700 h-9 px-4 py-2"
           >
             {mode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </button>
@@ -340,7 +340,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose, onAuth, onSwitchMo
           </span>
           <button
             onClick={() => onSwitchMode(mode === 'login' ? 'signup' : 'login')}
-            className="ml-1 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+            className="ml-1 text-yellow-600 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-300 font-medium"
           >
             {mode === 'login' ? 'Regístrate aquí' : 'Inicia sesión aquí'}
           </button>
